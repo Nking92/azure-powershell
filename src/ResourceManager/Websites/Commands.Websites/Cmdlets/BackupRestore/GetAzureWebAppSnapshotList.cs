@@ -25,13 +25,14 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
     /// <summary>
     /// Gets the status of an Azure Web App backup
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmWebAppSnapshotList"), OutputType(typeof(SnapshotCollection))]
+    [Cmdlet(VerbsCommon.Get, "AzureRmWebAppSnapshotList"), OutputType(typeof(void))]
     public class GetAzureWebAppSnapshotList : WebAppOptionalSlotBaseCmdlet
     {
         public override void ExecuteCmdlet()
         {
             base.ExecuteCmdlet();
-            IList<Snapshot> snapshotCollection = WebsitesClient.GetSiteSnapshots(ResourceGroupName, Name, Slot).Value;
+            WebsitesClient.GetSiteSnapshots(ResourceGroupName, Name, Slot);
+            /*
             AzureWebAppSnapshot[] snapshots = snapshotCollection.Select(snapshot => new AzureWebAppSnapshot()
             {
                 Name = this.Name,
@@ -40,6 +41,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
                 SnapshotTime = snapshot.Time.Value
             }).ToArray();
             WriteObject(snapshots, true);
+            */
         }
     }
 }

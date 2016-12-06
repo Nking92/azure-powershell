@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
                 kvp => kvp.Key.ToString(), kvp =>
                 {
                     var typeValuePair = new Hashtable((Hashtable)kvp.Value, StringComparer.OrdinalIgnoreCase);
-                    var type = (ConnectionStringType?)Enum.Parse(typeof(ConnectionStringType), typeValuePair["Type"].ToString(), true);
+                    var type = (ConnectionStringType)Enum.Parse(typeof(ConnectionStringType), typeValuePair["Type"].ToString(), true);
                     return new ConnStringValueTypePair
                     {
                         Type = type,
@@ -249,7 +249,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             var hostNameSslState = new HostNameSslState[0];
             if (site.HostNameSslStates != null)
             {
-                hostNameSslState = site.HostNameSslStates.Where(h => h.SslState.HasValue && h.SslState.Value != SslState.Disabled).ToArray();
+                hostNameSslState = site.HostNameSslStates.Where(h => h.SslState != SslState.Disabled).ToArray();
                 if (!string.IsNullOrEmpty(hostName))
                 {
                     hostNameSslState = hostNameSslState.Where(h => string.Equals(h.Name, hostName)).ToArray();
@@ -268,7 +268,7 @@ namespace Microsoft.Azure.Commands.WebApps.Utilities
             resourceGroupName = GetResourceGroupFromResourceId(webapp.Id);
 
             string webAppNameTemp, slotNameTemp;
-            if (TryParseAppAndSlotNames(webapp.SiteName, out webAppNameTemp, out slotNameTemp))
+            if (TryParseAppAndSlotNames(webapp.Name, out webAppNameTemp, out slotNameTemp))
             {
                 webAppName = webAppNameTemp;
                 slot = slotNameTemp;

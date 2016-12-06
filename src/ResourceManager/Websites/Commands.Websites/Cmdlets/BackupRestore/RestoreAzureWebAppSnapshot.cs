@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
     /// <summary>
     /// Restores an Azure Web App from a snapshot
     /// </summary>
-    [Cmdlet(VerbsData.Restore, "AzureRmWebAppSnapshot"), OutputType(typeof(RecoverResponse))]
+    [Cmdlet(VerbsData.Restore, "AzureRmWebAppSnapshot"), OutputType(typeof(void))]
     public class RestoreAzureWebAppSnapshot : WebAppOptionalSlotBaseCmdlet
     {
         [Parameter(Position = 3, Mandatory = true, HelpMessage = "The web app's content will be reverted to this point in time.", ValueFromPipelineByPropertyName = true)]
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.BackupRestore
                 SiteName = this.TargetSiteName,
                 SlotName = this.TargetSlotName
             };
-            WriteObject(WebsitesClient.RecoverSite(ResourceGroupName, Name, Slot, entity));
+            WebsitesClient.RecoverSite(ResourceGroupName, Name, Slot, entity);
         }
     }
 }

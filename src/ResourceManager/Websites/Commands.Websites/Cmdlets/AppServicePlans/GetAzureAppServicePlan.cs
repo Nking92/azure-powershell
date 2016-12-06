@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
     /// <summary>
     /// this commandlet will let you Get an Azure App Service Plan using ARM APIs
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRmAppServicePlan"), OutputType(typeof(ServerFarmWithRichSku), typeof(ServerFarmCollection))]
+    [Cmdlet(VerbsCommon.Get, "AzureRmAppServicePlan"), OutputType(typeof(AppServicePlan), typeof(IList<AppServicePlan>))]
     public class GetAppServicePlanCmdlet : WebAppBaseClientCmdLet
     {
         private const string ParameterSet1 = "S1";
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
                 ResourceType = "Microsoft.Web/ServerFarms"
             }).Where(sf => string.Equals(sf.Name, Name, StringComparison.OrdinalIgnoreCase)).ToArray();
 
-            var list = new List<ServerFarmWithRichSku>();
+            var list = new List<AppServicePlan>();
             for (var i = 0; i < serverFarmResources.Length; i++)
             {
                 var sf = serverFarmResources[i];
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
 
         private void GetByResourceGroup()
         {
-            WriteObject(WebsitesClient.ListAppServicePlans(ResourceGroupName).Value, true);
+            WriteObject(WebsitesClient.ListAppServicePlans(ResourceGroupName), true);
         }
 
         private void GetBySubscription()
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
                 ResourceType = "Microsoft.Web/ServerFarms"
             }).Select(sf => sf.ResourceGroupName).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
 
-            var list = new List<ServerFarmWithRichSku>();
+            var list = new List<AppServicePlan>();
 
 
             for (var i = 0; i < resourceGroups.Length; i++)
@@ -145,9 +145,9 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
                 try
                 {
                     var result = WebsitesClient.ListAppServicePlans(rg);
-                    if (result != null && result.Value != null)
+                    if (result != null )
                     {
-                        list.AddRange(result.Value);
+                        list.AddRange(result);
                     }
                 }
                 catch (Exception e)
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.AppServicePlans
                 ResourceType = "Microsoft.Web/ServerFarms"
             }).Where(sf => string.Equals(sf.Location, Location.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)).ToArray();
 
-            var list = new List<ServerFarmWithRichSku>();
+            var list = new List<AppServicePlan>();
             for (var i = 0; i < serverFarmResources.Length; i++)
             {
                 var sf = serverFarmResources[i];

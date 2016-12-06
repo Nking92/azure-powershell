@@ -138,8 +138,9 @@ namespace Microsoft.Azure.Commands.WebApps.Cmdlets.WebApps
         private void CloneSlots(string[] slotNames)
         {
             var hostingEnvironmentProfile = WebsitesClient.CreateHostingEnvironmentProfile(ResourceGroupName, AseResourceGroupName, AseName);
+            string apiVersion = "2016-08-01"; 
             var template = DeploymentTemplateHelper.CreateSlotCloneDeploymentTemplate(Location, AppServicePlan, Name, SourceWebApp.Id,
-                slotNames, hostingEnvironmentProfile, WebsitesClient.WrappedWebsitesClient.ApiVersion);
+                slotNames, hostingEnvironmentProfile, apiVersion);
 
             var deployment = new Management.Resources.Models.Deployment
             {
